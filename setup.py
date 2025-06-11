@@ -8,7 +8,7 @@ setup(
         "It includes a DSL (domain-specific language) to represent time anchors, offsets, and modifiers, "
         "along with a robust parser and resolver to evaluate these expressions into concrete dates. "
         "The name 'dateling' comes from combining 'date' and 'handling', reflecting its purpose of handling complex date computations"
-    )
+    ),
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/nostaljic/dateling",
