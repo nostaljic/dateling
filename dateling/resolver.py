@@ -58,7 +58,7 @@ class DatelingResolver:
             anchor = datetime(anchor.year, 12, 31).date()
 
         if 'year' in modifiers:
-            if modifiers['year'] == 'infer_year':
+            if modifiers['year'] == 'nearest_year':
                 year = anchor.year
             else:
                 year = int(modifiers['year'])

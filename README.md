@@ -46,7 +46,7 @@ The general expression format is:
 
 * `year_start` → resolves to start of year
 * `year_end` → resolves to end of year
-* `year=infer_year` → use anchor year, fallback to previous year if resulting date is in the future
+* `year=nearest_year` → use anchor year, fallback to previous year if resulting date is in the future
 * `year=YYYY` → explicitly set year
 * `month=MM` → override month
 * `day=DD` → override day
@@ -61,7 +61,7 @@ The general expression format is:
 | `{today -1d}` | 1 day before today |
 | `{today -1y \| year_start}` | start of year, 1 year ago |
 | `{2025-01-01 +30y \| year_end}` | year-end of 30 years after Jan 1, 2025|
-| `{today \| year=infer_year, month=03, day=10}` | resolves to March 10 of anchor year (or previous year if future) |
+| `{today \| year=nearest_year, month=03, day=10}` | resolves to March 10 of anchor year (or previous year if future) |
 | `{year=2023, month=05, day=15}` | absolute date |
 
 ---
@@ -72,14 +72,14 @@ The general expression format is:
 | ------------------------------- | ----------- |
 | `{today}`                       | 2025-06-11 |
 | `{today -1d}`                   | 2025-06-10 |
-| `{today -365d \| year=infer_year}` | 2024-06-11 |
+| `{today -365d \| year=nearest_year}` | 2024-06-11 |
 | `{today -3y}` | 2022-06-11 |
 | `{today \| year_start}` | 2025-01-01 |
 | `{today \| year_end}` | 2025-12-31 |
 | `{today -1y \| year_start}` | 2024-01-01 |
 | `{today -1y \| year_end}` | 2024-12-31 |
-| `{today \| year=infer_year, month=06, day=10}` | 2025-06-10 |
-| `{today -1y \| year=infer_year, month=03, day=10}` | 2024-03-10 |
+| `{today \| year=nearest_year, month=06, day=10}` | 2025-06-10 |
+| `{today -1y \| year=nearest_year, month=03, day=10}` | 2024-03-10 |
 | `{today \| year=2024, month=06, day=10}` | 2024-06-10 |
 | `{year=2022, month=05, day=15}` | 2022-05-15 |
 | `2025-01-01`                    | 2025-01-01 |
