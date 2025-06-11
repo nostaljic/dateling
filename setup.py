@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="dateling",
-    version="1.0.1",
+    version="1.1.0",
     description=(
         "dateling provides a normalized formal language and grammar for handling relative time expressions. "
         "It includes a DSL (domain-specific language) to represent time anchors, offsets, and modifiers, "

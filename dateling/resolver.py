@@ -10,10 +10,11 @@ class DatelingResolver:
     def resolve(self, expr):
         expr = expr.strip()
 
+        # Full DSL expression pattern
         full_pattern = r"\{([a-zA-Z0-9\-]+)(?:\s*([+-])(\d+)([dym]))?(?:\s*\|\s*(.*))?\}"
         m = re.match(full_pattern, expr)
         if not m:
-            # absolute form: {year=YYYY, month=MM, day=DD}
+            # Absolute form: {year=YYYY, month=MM, day=DD}
             absolute_pattern = r"\{year=(\d+),\s*month=(\d+),\s*day=(\d+)\}"
             am = re.match(absolute_pattern, expr)
             if am:
@@ -27,6 +28,7 @@ class DatelingResolver:
                 except:
                     return None
 
+        # Extract parsed parts
         anchor_str = m.group(1)
         offset_sign = m.group(2)
         offset_num = m.group(3)
@@ -35,6 +37,7 @@ class DatelingResolver:
 
         anchor = self._resolve_anchor(anchor_str)
 
+        # Apply offset
         if offset_num:
             offset_num = int(offset_num)
             if offset_sign == "-":
@@ -47,16 +50,19 @@ class DatelingResolver:
             elif offset_unit == 'y':
                 anchor += relativedelta(years=offset_num)
 
+        # No modifiers → return directly
         if not modifiers_str:
             return anchor
 
         modifiers = self._parse_modifiers(modifiers_str)
 
+        # Apply year_start / year_end
         if 'year_start' in modifiers:
             anchor = datetime(anchor.year, 1, 1).date()
         if 'year_end' in modifiers:
             anchor = datetime(anchor.year, 12, 31).date()
 
+        # Apply year override
         if 'year' in modifiers:
             if modifiers['year'] == 'nearest_year':
                 year = anchor.year
@@ -69,7 +75,8 @@ class DatelingResolver:
         day = int(modifiers.get('day', anchor.day))
         candidate = datetime(year, month, day).date()
 
-        if modifiers.get('year') == 'infer_year' and candidate > self.today:
+        # nearest_year fallback rule
+        if modifiers.get('year') == 'nearest_year' and candidate > self.today:
             candidate = datetime(year - 1, month, day).date()
 
         return candidate
