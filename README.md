@@ -55,6 +55,7 @@ The general expression format is:
 ### Anchors:
 
 * `today` (system reference date)
+* `first_date_of_this_year`
 * `first_date_of_this_month`
 * `monday_of_this_week`
 * `YYYYMMDD` (e.g. `20250101`)
