@@ -22,6 +22,28 @@ In contrast, `dateling` takes a **strict, declarative, and composable approach**
 
 ---
 
+## 📦 What's New in v1.2 & v1.3
+
+### ✅ v1.2 Updates:
+
+- Added `${}` support as an alternative bracket style to `{}`.
+- Added new anchor keywords:
+  - `first_date_of_this_month` — resolves to the first day of the current month.
+  - `monday_of_this_week` — resolves to the Monday of the current week.
+
+### ✅ v1.3 Updates:
+
+- Added `month=nearest_month` modifier.
+  - Similar to `year=nearest_year`, but applies nearest-month logic.
+  - If the resolved date falls into the future, fallback to previous month (and adjust year if necessary).
+- Further improved composability of partial expressions (ex: "11일의 주가 알려줘" → `{today | year=nearest_year, month=nearest_month, day=11}`).
+
+### ✅ v1.3.1 Updates:
+- Added new anchor keywords:
+  - `first_date_of_this_year` — resolves to the first day of the current year.
+
+---
+
 ## 📅 DSL Syntax
 
 The general expression format is:
@@ -33,6 +55,8 @@ The general expression format is:
 ### Anchors:
 
 * `today` (system reference date)
+* `first_date_of_this_month`
+* `monday_of_this_week`
 * `YYYYMMDD` (e.g. `20250101`)
 * `YYYY-MM-DD` (e.g. `2025-01-01`)
 
@@ -48,6 +72,7 @@ The general expression format is:
 * `year_end` → resolves to end of year
 * `year=nearest_year` → use anchor year, fallback to previous year if resulting date is in the future
 * `year=YYYY` → explicitly set year
+* `month=nearest_month` → anchor month, fallback to previous month if resulting date is in the future
 * `month=MM` → override month
 * `day=DD` → override day
 
@@ -58,11 +83,17 @@ The general expression format is:
 | DSL Expression                  | Meaning                               |
 | ------------------------------- | ------------------------------------- |
 | `{today}` | today's date |
+| `${today}` | today's date |
 | `{today -1d}` | 1 day before today |
+| `${today -1d}` | 1 day before today |
 | `{today -1y \| year_start}` | start of year, 1 year ago |
+| `${today -1y \| year_start}` | start of year, 1 year ago |
 | `{2025-01-01 +30y \| year_end}` | year-end of 30 years after Jan 1, 2025|
+| `${2025-01-01 +30y \| year_end}` | year-end of 30 years after Jan 1, 2025|
 | `{today \| year=nearest_year, month=03, day=10}` | resolves to March 10 of anchor year (or previous year if future) |
+| `${today \| year=nearest_year, month=03, day=10}` | resolves to March 10 of anchor year (or previous year if future) |
 | `{year=2023, month=05, day=15}` | absolute date |
+| `${year=2023, month=05, day=15}` | absolute date |
 
 ---
 

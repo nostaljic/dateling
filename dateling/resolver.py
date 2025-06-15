@@ -106,6 +106,8 @@ class DatelingResolver:
     def _resolve_anchor(self, anchor_str):
         if anchor_str == "today":
             return self.today
+        elif anchor_str == "first_date_of_this_year":
+            return datetime(self.today.year, 1, 1).date()
         elif anchor_str == "first_date_of_this_month":
             return datetime(self.today.year, self.today.month, 1).date()
         elif anchor_str == "monday_of_this_week":

@@ -50,6 +50,9 @@ def test_cases():
         "{today -1y | year=nearest_year, month=nearest_month, day=10}",
         "{today +1y | year=nearest_year, month=nearest_month, day=10}",
         "{today | year=nearest_year, month=nearest_month, day=1}"
+        # v1.3.1 신규 기능 테스트 (month=nearest_month)
+        "{first_date_of_this_year}",
+        "${first_date_of_this_year}",
     ]
 
     for ex in examples:
