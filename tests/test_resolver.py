@@ -53,6 +53,9 @@ def test_cases():
         # v1.3.1 신규 기능 테스트 (month=nearest_month)
         "{first_date_of_this_year}",
         "${first_date_of_this_year}",
+        # v1.3.2 신규 기능 테스트 (계산 토큰 앞 띄워쓰기 인식)
+        "{today + 1d}",
+        "${today - 1d}",
     ]
 
     for ex in examples:

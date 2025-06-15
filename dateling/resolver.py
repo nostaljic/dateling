@@ -15,7 +15,7 @@ class DatelingResolver:
             expr = "{" + expr[2:]
 
         # Full DSL expression pattern
-        full_pattern = r"\{([a-zA-Z0-9\-_]+)(?:\s*([+-])(\d+)([dym]))?(?:\s*\|\s*(.*))?\}"
+        full_pattern = r"\{([a-zA-Z0-9\-_]+)(?:\s*([+-])\s*(\d+)\s*([dym]))?(?:\s*\|\s*(.*))?\}"
         m = re.match(full_pattern, expr)
         if not m:
             # Absolute form: {year=YYYY, month=MM, day=DD}

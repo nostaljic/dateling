@@ -42,6 +42,10 @@ In contrast, `dateling` takes a **strict, declarative, and composable approach**
 - Added new anchor keywords:
   - `first_date_of_this_year` — resolves to the first day of the current year.
 
+### ✅ v1.3.2 Updates:
+- Supports for blank after (+/-) sign:
+  - now supports for `{today + 1d}`
+
 ---
 
 ## 📅 DSL Syntax
