@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import re
 from dateutil.relativedelta import relativedelta
 
@@ -10,8 +10,12 @@ class DatelingResolver:
     def resolve(self, expr):
         expr = expr.strip()
 
+        # New: support both {} and ${}
+        if expr.startswith("${"):
+            expr = "{" + expr[2:]
+
         # Full DSL expression pattern
-        full_pattern = r"\{([a-zA-Z0-9\-]+)(?:\s*([+-])(\d+)([dym]))?(?:\s*\|\s*(.*))?\}"
+        full_pattern = r"\{([a-zA-Z0-9\-_]+)(?:\s*([+-])(\d+)([dym]))?(?:\s*\|\s*(.*))?\}"
         m = re.match(full_pattern, expr)
         if not m:
             # Absolute form: {year=YYYY, month=MM, day=DD}
@@ -71,19 +75,41 @@ class DatelingResolver:
         else:
             year = anchor.year
 
-        month = int(modifiers.get('month', anchor.month))
+        # Apply month override
+        if 'month' in modifiers:
+            if modifiers['month'] == 'nearest_month':
+                month = anchor.month
+            else:
+                month = int(modifiers['month'])
+        else:
+            month = anchor.month
+
+        # Apply day override
         day = int(modifiers.get('day', anchor.day))
-        candidate = datetime(year, month, day).date()
 
-        # nearest_year fallback rule
-        if modifiers.get('year') == 'nearest_year' and candidate > self.today:
-            candidate = datetime(year - 1, month, day).date()
+        # Apply nearest_month fallback (after year applied)
+        try_date = datetime(year, month, day).date()
+        if modifiers.get('month') == 'nearest_month' and try_date > self.today:
+            month -= 1
+            if month == 0:
+                month = 12
+                year -= 1
+            try_date = datetime(year, month, day).date()
 
-        return candidate
+        # Apply nearest_year fallback
+        if modifiers.get('year') == 'nearest_year' and try_date > self.today:
+            year -= 1
+            try_date = datetime(year, month, day).date()
+
+        return try_date
 
     def _resolve_anchor(self, anchor_str):
         if anchor_str == "today":
             return self.today
+        elif anchor_str == "first_date_of_this_month":
+            return datetime(self.today.year, self.today.month, 1).date()
+        elif anchor_str == "monday_of_this_week":
+            return self.today - timedelta(days=self.today.weekday())
         try:
             if '-' in anchor_str:
                 return datetime.strptime(anchor_str, "%Y-%m-%d").date()
